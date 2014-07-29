@@ -27,13 +27,13 @@ export SUBARCH=arm
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/dev-harsh1998/android/kernel/android_kernel_cyanogen_msm8916"
-ANYKERNEL_DIR="$RESOURCE_DIR/Kernel-Ready"
-TOOLCHAIN_DIR="/home/dev-harsh1998/android/kernel/tc"
+RESOURCE_DIR="/home/harshit/android/kernel/android_kernel_cyanogen_msm8916"
+ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2"
+TOOLCHAIN_DIR="/home/harshit/android/kernel/tc"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
-ZIP_MOVE="/home/dev-harsh1998/Desktop/Jalebi-Phantom"
+ZIP_MOVE="/home/harshit/Desktop/Jalebi-Release"
 ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
 
 # Functions
@@ -103,10 +103,10 @@ case "$echoice" in
 		break
 		;;
 	2 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/PHANTOM-NARO/bin/arm-linux-gnueabihf-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-6.x-linaro/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
 #		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
-		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
+#		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
 		TC="PHANT-NARO"
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
