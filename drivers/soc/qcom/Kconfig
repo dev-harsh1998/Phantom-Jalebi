@@ -571,6 +571,13 @@ config MSM_PERFORMANCE_HOTPLUG_ON
           compile out the nodes needed for core-control functionality through
           msm_performance.
 
-source "drivers/soc/qcom/memshare/Kconfig"
+config INTELLI_HOTPLUG
+	bool "Intelli hotplug driver"
+	depends on HOTPLUG_CPU
+	default y
+	help
+	  An intelligent cpu hotplug driver for
+	  Low Latency Frequency Transition capable processors.
+
 
 endif # ARCH_MSM
