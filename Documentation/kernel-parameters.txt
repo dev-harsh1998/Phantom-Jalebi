@@ -2609,6 +2609,7 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 
 	rcutorture.gp_exp= [KNL]
 			Use expedited update-side primitives.
+<<<<<<< HEAD
 
 	rcutorture.gp_normal= [KNL]
 			Use normal (non-expedited) update-side primitives.
@@ -2616,6 +2617,15 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			If neither gp_exp nor gp_normal are set, still
 			do both.
 
+=======
+
+	rcutorture.gp_normal= [KNL]
+			Use normal (non-expedited) update-side primitives.
+			If both gp_exp and gp_normal are set, do both.
+			If neither gp_exp nor gp_normal are set, still
+			do both.
+
+>>>>>>> b7cfe5e... rcu: Squashed commit of the following:
 	rcutorture.n_barrier_cbs= [KNL]
 			Set callbacks/threads for rcu_barrier() testing.
 
