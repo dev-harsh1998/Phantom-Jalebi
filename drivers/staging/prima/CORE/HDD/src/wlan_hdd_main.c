@@ -4734,7 +4734,7 @@ static VOS_STATUS hdd_parse_ese_beacon_req(tANI_U8 *pValue,
     v = sscanf(inPtr, "%31s ", buf);
     if (1 != v) return -EINVAL;
 
-    v = kstrtou8(buf, 10, &input);
+    v = kstrtos8(buf, 10, &input);
     if ( v < 0) return -EINVAL;
 
     input = VOS_MIN(input, SIR_ESE_MAX_MEAS_IE_REQS);
@@ -4770,7 +4770,7 @@ static VOS_STATUS hdd_parse_ese_beacon_req(tANI_U8 *pValue,
                 if (!tempInt)
                 {
                    VOS_TRACE( VOS_MODULE_ID_HDD, VOS_TRACE_LEVEL_ERROR,
-                             "Invalid Measurement Token: %d", tempInt);
+                             "Invalid Measurement Token: %u", tempInt);
                    return -EINVAL;
                 }
                 pEseBcnReq->bcnReq[j].measurementToken = tempInt;
@@ -4781,7 +4781,7 @@ static VOS_STATUS hdd_parse_ese_beacon_req(tANI_U8 *pValue,
                     (tempInt > WNI_CFG_CURRENT_CHANNEL_STAMAX))
                 {
                    VOS_TRACE( VOS_MODULE_ID_HDD, VOS_TRACE_LEVEL_ERROR,
-                             "Invalid Channel Number: %d", tempInt);
+                             "Invalid Channel Number: %u", tempInt);
                    return -EINVAL;
                 }
                 pEseBcnReq->bcnReq[j].channel = tempInt;
@@ -4791,19 +4791,18 @@ static VOS_STATUS hdd_parse_ese_beacon_req(tANI_U8 *pValue,
                 if ((tempInt < eSIR_PASSIVE_SCAN) || (tempInt > eSIR_BEACON_TABLE))
                 {
                    VOS_TRACE( VOS_MODULE_ID_HDD, VOS_TRACE_LEVEL_ERROR,
-                             "Invalid Scan Mode(%d) Expected{0|1|2}", tempInt);
+                             "Invalid Scan Mode(%u) Expected{0|1|2}", tempInt);
                    return -EINVAL;
                 }
                 pEseBcnReq->bcnReq[j].scanMode= tempInt;
                 break;
 
                 case 3:  /* Measurement duration */
-                if (((!tempInt) &&
-		    (pEseBcnReq->bcnReq[j].scanMode != eSIR_BEACON_TABLE)) ||
+                if (((!tempInt) && (pEseBcnReq->bcnReq[j].scanMode != eSIR_BEACON_TABLE)) ||
                     ((pEseBcnReq->bcnReq[j].scanMode == eSIR_BEACON_TABLE)))
                 {
                    VOS_TRACE( VOS_MODULE_ID_HDD, VOS_TRACE_LEVEL_ERROR,
-                             "Invalid Measurement Duration: %d", tempInt);
+                             "Invalid Measurement Duration: %u", tempInt);
                    return -EINVAL;
                 }
                 pEseBcnReq->bcnReq[j].measurementDuration = tempInt;
@@ -5875,8 +5874,32 @@ VOS_STATUS hdd_release_firmware(char *pFileName,v_VOID_t *pCtx)
 {
    VOS_STATUS status = VOS_STATUS_SUCCESS;
    hdd_context_t *pHddCtx = (hdd_context_t*)pCtx;
+   static char *WLAN_NV_FILE = NULL;
    ENTER();
 
+   /* ze550kl and ze550kg have the same project id, but ze550kg only have 3G sku, and others belongs to ze550kl */
+   if (ASUS_ZE550KL == asus_PRJ_ID) {
+      /* RF SKU US:2 3G:3 TW:4 WW:5 CUCC:6 CMCC:7 */
+      if (0 == strncmp(asus_project_RFsku, "3", 2))
+         WLAN_NV_FILE = ZE550KG_WLAN_NV_FILE;
+      else if (0 == strncmp(asus_project_RFsku, "7", 2))
+         WLAN_NV_FILE = ZE550KL_CMCC_WLAN_NV_FILE;
+      /* ze551kl_US is LTE and FHD */
+      else if ((0 == strncmp(asus_project_lte, "1", 2)) && (0 == strncmp(asus_project_hd, "0", 2)) && (0 == strncmp(asus_project_RFsku, "2", 2)))
+         WLAN_NV_FILE = ZE551KL_WLAN_NV_FILE;
+      else
+         WLAN_NV_FILE = ZE550KL_WLAN_NV_FILE;
+   }
+   else if (ASUS_ZE600KL == asus_PRJ_ID)
+      WLAN_NV_FILE = ZE600KL_WLAN_NV_FILE;
+   else if (ASUS_ZX550KL == asus_PRJ_ID)
+      WLAN_NV_FILE = ZX550KL_WLAN_NV_FILE;
+   else if (ASUS_ZD550KL == asus_PRJ_ID) {
+      if (0 == strncmp(asus_project_RFsku, "7", 2))
+         WLAN_NV_FILE = ZD550KL_CMCC_WLAN_NV_FILE;
+      else
+         WLAN_NV_FILE = ZD550KL_CUCC_WLAN_NV_FILE;
+   }
 
    if (!strcmp(WLAN_FW_FILE, pFileName)) {
    
@@ -5925,7 +5948,32 @@ VOS_STATUS hdd_request_firmware(char *pfileName,v_VOID_t *pCtx,v_VOID_t **ppfw_d
    int status;
    VOS_STATUS retval = VOS_STATUS_SUCCESS;
    hdd_context_t *pHddCtx = (hdd_context_t*)pCtx;
+   static char *WLAN_NV_FILE = NULL;
    ENTER();
+
+   /* ze550kl and ze550kg have the same project id, but ze550kg only have 3G sku, and others belongs to ze550kl */
+   if (ASUS_ZE550KL == asus_PRJ_ID) {
+      /* RF SKU US:2 3G:3 TW:4 WW:5 CUCC:6 CMCC:7 */
+      if (0 == strncmp(asus_project_RFsku, "3", 2))
+         WLAN_NV_FILE = ZE550KG_WLAN_NV_FILE;
+      else if (0 == strncmp(asus_project_RFsku, "7", 2))
+         WLAN_NV_FILE = ZE550KL_CMCC_WLAN_NV_FILE;
+      /* ze551kl_US is LTE and FHD */
+      else if ((0 == strncmp(asus_project_lte, "1", 2)) && (0 == strncmp(asus_project_hd, "0", 2)) && (0 == strncmp(asus_project_RFsku, "2", 2)))
+         WLAN_NV_FILE = ZE551KL_WLAN_NV_FILE;
+      else
+         WLAN_NV_FILE = ZE550KL_WLAN_NV_FILE;
+   }
+   else if (ASUS_ZE600KL == asus_PRJ_ID)
+      WLAN_NV_FILE = ZE600KL_WLAN_NV_FILE;
+   else if (ASUS_ZX550KL == asus_PRJ_ID)
+      WLAN_NV_FILE = ZX550KL_WLAN_NV_FILE;
+   else if (ASUS_ZD550KL == asus_PRJ_ID) {
+      if (0 == strncmp(asus_project_RFsku, "7", 2))
+         WLAN_NV_FILE = ZD550KL_CMCC_WLAN_NV_FILE;
+      else
+         WLAN_NV_FILE = ZD550KL_CUCC_WLAN_NV_FILE;
+   }
 
    if( (!strcmp(WLAN_FW_FILE, pfileName)) ) {
 
