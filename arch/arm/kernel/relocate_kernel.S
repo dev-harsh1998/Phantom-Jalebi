@@ -91,3 +91,4 @@ relocate_new_kernel_size:
 	.long relocate_new_kernel_end - relocate_new_kernel
 
 
+

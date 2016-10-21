@@ -65,6 +65,8 @@ extern void init_espfix_ap(void);
 
 #ifndef _SETUP
 
+#include <asm/espfix.h>
+
 /*
  * This is set up by the setup-routine at boot-time
  */

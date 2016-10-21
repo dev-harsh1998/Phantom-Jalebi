@@ -1,6 +1,10 @@
 VERSION = 3
 PATCHLEVEL = 10
+<<<<<<< HEAD
 SUBLEVEL = 100
+=======
+SUBLEVEL = 104
+>>>>>>> 87d6dde... Linux 3.10.104
 EXTRAVERSION =
 NAME = TOSSUG Baby Fish
 
@@ -245,6 +249,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
 <<<<<<< HEAD
+<<<<<<< HEAD
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-value
 HOSTCXXFLAGS = -O3 -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe
 =======
@@ -254,6 +259,9 @@ HOSTCXXFLAGS = -Ofast -fgcse-las -fgraphite -floop-flatten -floop-parallelize-al
 HOSTCC       = gcc
 HOSTCXX      = g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
+=======
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
+>>>>>>> 87d6dde... Linux 3.10.104
 HOSTCXXFLAGS = -O2
 >>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
 >>>>>>> parent of a008537... Move d_u.d_child to d_child
@@ -411,6 +419,7 @@ LINUXINCLUDE    := \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+<<<<<<< HEAD
 					-fno-strict-aliasing -fno-common \
 					-Werror-implicit-function-declaration \
 					-Wno-format-security -Wno-logical-not-parentheses \
@@ -426,6 +435,16 @@ $(GEN_OPT_FLAGS)
 
 KBUILD_AFLAGS_KERNEL := $(GEN_OPT_FLAGS)
 KBUILD_CFLAGS_KERNEL := $(GEN_OPT_FLAGS)
+=======
+		   -fno-strict-aliasing -fno-common \
+		   -Werror-implicit-function-declaration \
+		   -Wno-format-security \
+		   -fno-delete-null-pointer-checks \
+		   -std=gnu89
+
+KBUILD_AFLAGS_KERNEL :=
+KBUILD_CFLAGS_KERNEL :=
+>>>>>>> 87d6dde... Linux 3.10.104
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_AFLAGS_MODULE  := -DMODULE
 KBUILD_CFLAGS_MODULE  := -DMODULE
