@@ -65,6 +65,20 @@ config SECURITY_SELINUX_DEVELOP
 	  can interactively toggle the kernel between enforcing mode and
 	  permissive mode (if permitted by the policy) via /selinux/enforce.
 
+config SECURITY_SELINUX_SET_ENFORCE
+	bool "this will keep selinux on ManForce mode forever"
+	depends on SECURITY_SELINUX_DEVELOP
+	default n
+	help
+	  Yet another simple api to play with selinux via defconfig.
+
+config SECURITY_SELINUX_SET_PREMISSIVE
+	bool "This should keep selinux PREMISSIVE"
+	depends on SECURITY_SELINUX_DEVELOP
+	default n
+	help
+	  Yet another simple api to play with selinux via defconfig.
+
 config SECURITY_SELINUX_AVC_STATS
 	bool "NSA SELinux AVC Statistics"
 	depends on SECURITY_SELINUX
@@ -73,6 +87,14 @@ config SECURITY_SELINUX_AVC_STATS
 	  This option collects access vector cache statistics to
 	  /selinux/avc/cache_stats, which may be monitored via
 	  tools such as avcstat.
+
+config SECURITY_SELINUX_ENFORCING
+	int "Manforce default value"
+	depends on SECURITY_SELINUX && !SECURITY_SELINUX_DEVELOP
+	range 0 1
+	default 1
+	help
+	  This keeps the default value of selinux i.e 1 (Manforce).
 
 config SECURITY_SELINUX_CHECKREQPROT_VALUE
 	int "NSA SELinux checkreqprot default value"
