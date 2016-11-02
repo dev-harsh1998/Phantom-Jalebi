@@ -1,12 +1,14 @@
+# These are provided in Android-based builds
+# Need to explicitly define for Kernel-based builds
 MODNAME := wlan
 WLAN_ROOT := drivers/staging/prima
-
-# Feature flags which are not (currently) configurable via Kconfig
 
 # To enable CONFIG_QCOM_ESE_UPLOAD, dependent config
 # CONFIG_QCOM_ESE must be enabled.
 CONFIG_QCOM_ESE := n
 CONFIG_QCOM_ESE_UPLOAD := n
+
+# Feature flags which are not (currently) configurable via Kconfig
 
 #Whether to build debug version
 BUILD_DEBUG_VERSION := 1
@@ -258,6 +260,7 @@ SME_P2P_OBJS = $(SME_SRC_DIR)/p2p/p2p_Api.o
 SME_RRM_OBJS := $(SME_SRC_DIR)/rrm/sme_rrm.o
 
 SME_NAN_OBJS = $(SME_SRC_DIR)/nan/nan_Api.o
+
 
 SME_OBJS :=	$(SME_BTC_OBJS) \
 		$(SME_CCM_OBJS) \
@@ -558,15 +561,7 @@ endif
 #normally, TDLS negative behavior is not needed
 ifeq ($(CONFIG_QCOM_TDLS),y)
 CDEFINES += -DFEATURE_WLAN_TDLS
-ifeq ($(BUILD_DEBUG_VERSION),1)
-CDEFINES += -DWLAN_FEATURE_TDLS_DEBUG
-endif
 CDEFINES += -DCONFIG_TDLS_IMPLICIT
-#CDEFINES += -DFEATURE_WLAN_TDLS_NEGATIVE
-#Code under FEATURE_WLAN_TDLS_INTERNAL is ported from volans, This code
-#is not tested only verifed that it compiles. This is not required for
-#supplicant based implementation
-#CDEFINES += -DFEATURE_WLAN_TDLS_INTERNAL
 endif
 
 ifeq ($(CONFIG_PRIMA_WLAN_BTAMP),y)
@@ -628,13 +623,10 @@ endif
 
 # Fix build for GCC 4.7
 EXTRA_CFLAGS += -Wno-maybe-uninitialized -Wno-unused-function
-<<<<<<< HEAD
-=======
 
 ifeq ($(CONFIG_WLAN_OFFLOAD_PACKETS),y)
 CDEFINES += -DWLAN_FEATURE_OFFLOAD_PACKETS
 endif
->>>>>>> 60599e0... drivers/staging: Import prima LA.BR.1.2.9-00810-8x16.0
 
 KBUILD_CPPFLAGS += $(CDEFINES)
 
