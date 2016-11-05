@@ -18,7 +18,7 @@ KERNEL="zImage"
 #Hyper Kernel Details
 BASE_VER="PhAnToM"
 VER="-r1-$(date +"%Y-%m-%d"-%H%M)-"
-KERRNEL_VER="$BASE_VER$VER$TC"
+KERNEL_VER="$BASE_VER$VER$TC"
 
 # Vars
 export ARCH=arm
@@ -43,14 +43,14 @@ function make_kernel {
 		cp -vr $ZIMAGE_DIR/$KERNEL $REPACK_DIR/zImage
 }
 
-function make_modules {
-		cd $KERNEL_DIR
-		make modules $THREAD
-		find $KERNEL_DIR -name '*.ko' -exec cp {} $MODULES_DIR/ \;
-		cd $MODULES_DIR
-        $STRIP --strip-unneeded *.ko
-        cd $KERNEL_DIR
-}
+#function make_modules {
+#		cd $KERNEL_DIR
+#		make modules $THREAD
+#		find $KERNEL_DIR -name '*.ko' -exec cp {} $MODULES_DIR/ \;
+#		cd $MODULES_DIR
+#        $STRIP --strip-unneeded *.ko
+#        cd $KERNEL_DIR
+#}
 
 function make_dtb {
 		$KERNEL_DIR/dtbToolCM -2 -o $KERNEL_DIR/arch/arm/boot/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
@@ -59,8 +59,8 @@ function make_dtb {
 
 function make_zip {
 		cd $REPACK_DIR
-                zip -r `echo $Hyper_VER$TC`.zip *
-		mv  `echo $Hyper_VER$TC`.zip $ZIP_MOVE
+                zip -r `echo $KERNEL_VER$TC`.zip *
+		mv  `echo $KERNEL_VER$TC`.zip $ZIP_MOVE
 		cd $KERNEL_DIR
 }
 
@@ -129,7 +129,7 @@ done
 echo -e "${restore}"
 
 echo
-while read -p "Do you want to start Building Hyper Kernel ?
+while read -p "Do you want to start Building Phantom Kernel ?
 
 Yes Or No ? 
 
@@ -140,7 +140,7 @@ case "$dchoice" in
 	y|Y )
 		make_kernel
 		make_dtb
-		make_modules
+#		make_modules
 		make_zip
 		break
 		;;
@@ -155,7 +155,7 @@ case "$dchoice" in
 esac
 done
 echo -e "${green}"
-echo $Hyper_VER$TC.zip
+echo $KERNEL_VER$TC.zip
 echo "------------------------------------------"
 echo -e "${restore}"
 
