@@ -102,9 +102,9 @@ case "$echoice" in
 		break
 		;;
 	2 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/PHANTOM-NARO/bin/arm-linux-gnueabihf-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
-		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
+		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
 		TC="PHANT-NARO"
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
