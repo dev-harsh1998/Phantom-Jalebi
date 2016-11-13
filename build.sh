@@ -74,7 +74,7 @@ echo "--------------------------------------------------------"
 echo -e "${restore}"
 
 echo -e "${cyan}"
-while read -p "Plese Select Desired Toolchain for compiling Hyper Kernel
+while read -p "Plese Select Desired Toolchain for compiling Kernel
 
 UBERTC-4.9---->(1)
 
@@ -102,9 +102,9 @@ case "$echoice" in
 		break
 		;;
 	2 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/PHANTOM-NARO/bin/arm-linux-gnueabihf-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
-		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
+#		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
 		TC="PHANT-NARO"
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
