@@ -14,7 +14,7 @@ clear
 THREAD="-j12"
 DEFCONFIG="cyanogenmod_jalebi_defconfig"
 KERNEL="zImage"
-export USE_CCACHE=1
+#export USE_CCACHE=1
 
 #Hyper Kernel Details
 BASE_VER="PhAnToM"
