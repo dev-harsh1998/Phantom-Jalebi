@@ -14,6 +14,7 @@ clear
 THREAD="-j12"
 DEFCONFIG="cyanogenmod_jalebi_defconfig"
 KERNEL="zImage"
+export USE_CCACHE=1
 
 #Hyper Kernel Details
 BASE_VER="PhAnToM"
@@ -85,10 +86,10 @@ PHANT-NARO(HARD-FLOATED)-6.1---->(2)
 do
 case "$echoice" in
 	1 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-7.0/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/saber-4.9/lib/
-		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-strip
-		TC="UBER"
+		#STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-strip
+		TC="UBER7"
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
 		rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
