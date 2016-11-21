@@ -181,6 +181,7 @@
 	lsr	\rd, \rd, #13
 	mov	\rd, \rd, lsl #13
 	.endm
+
 #endif	/* !CONFIG_THUMB2_KERNEL */
 
 /*
