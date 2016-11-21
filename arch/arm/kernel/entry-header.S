@@ -188,8 +188,6 @@
 	mov	\rd, \rd, lsl #13
 	.endm
 
-<<<<<<< HEAD
-=======
 	@
 	@ 32-bit wide "mov pc, reg"
 	@
@@ -197,7 +195,6 @@
 	mov	pc, \reg
 	nop
 	.endm
->>>>>>> parent of 19fdf90... ARM: convert all "mov.* pc, reg" to "bx reg" for ARMv6+
 #endif	/* !CONFIG_THUMB2_KERNEL */
 
 /*
