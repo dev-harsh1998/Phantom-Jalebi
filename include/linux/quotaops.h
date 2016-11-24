@@ -347,6 +347,7 @@ static inline void dquot_free_space(struct inode *inode, qsize_t nr)
 	mark_inode_dirty_sync(inode);
 }
 
+
 static inline void dquot_free_block_nodirty(struct inode *inode, qsize_t nr)
 {
 	dquot_free_space_nodirty(inode, nr << inode->i_blkbits);
