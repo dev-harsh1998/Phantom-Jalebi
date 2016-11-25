@@ -17,6 +17,8 @@ KERNEL="zImage"
 #export USE_CCACHE=1
 
 #Hyper Kernel Details
+export KBUILD_BUILD_USER="harsh1998"
+export KBUILD_BUILD_HOST="PhAnToM™"
 BASE_VER="PhAnToM"
 VER="-r1-$(date +"%Y-%m-%d"-%H%M)-"
 KERNEL_VER="$BASE_VER$VER$TC"
@@ -164,7 +166,3 @@ echo -e "${restore}"
 DATE_END=$(date +"%s")
 DIFF=$(($DATE_END - $DATE_START))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
-echo " "
-cd $ZIP_MOVE
-ls
-ftp uploads.androidfilehost.com
