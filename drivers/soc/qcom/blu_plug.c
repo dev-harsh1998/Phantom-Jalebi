@@ -386,7 +386,7 @@ static int set_max_freq_screenoff(const char *val, const struct kernel_param *kp
 	ret = kstrtouint(val, 10, &i);
 	if (ret)
 		return -EINVAL;
-	if (i < 35800 || i > 3091200)
+	if (i < 40000 || i > 1209600)
 		return -EINVAL;
 
 	ret = param_set_uint(val, kp);
@@ -524,7 +524,8 @@ module_param_cb(enabled, &enabled_ops, &blu_plug_enabled, 0644);
 
 MODULE_AUTHOR("Stratos Karafotis <stratosk@semaphore.gr");
 MODULE_AUTHOR("engstk <eng.stk@sapo.pt>");
-MODULE_DESCRIPTION("'dyn_hotplug' - A dynamic hotplug driver for mako / hammerhead / shamu (blu_plug)");
+MODULE_AUTHOR("Harshit jain <harshitjain6751@gmail.com>")
+MODULE_DESCRIPTION("'dyn_hotplug' - A dynamic hotplug driver for mako / hammerhead / shamu / Jalebi (blu_plug)");
 MODULE_LICENSE("GPLv2");
 
 late_initcall(dyn_hp_init);
