@@ -1,5 +1,18 @@
 ccflags-y += -I$(src)
 
+CFLAGS_KERNEL := -fno-graphite \
+          	-fno-graphite-identity \
+          	-fno-loop-flatten \
+          	-fno-tree-loop-linear \
+          	-fno-loop-interchange \
+          	-fno-loop-strip-mine \
+          	-fno-loop-block \
+          	-fno-loop-nest-optimize \
+          	-fno-loop-unroll-and-jam \
+          	-fno-loop-parallelize-all \
+          	-ftree-parallelize-loops=0 \
+          	-fno-openmp
+
 mdss-mdp3-objs = mdp3.o mdp3_dma.o mdp3_ctrl.o dsi_status_v2.o
 mdss-mdp3-objs += mdp3_ppp.o mdp3_ppp_hwio.o mdp3_ppp_data.o
 obj-$(CONFIG_FB_MSM_MDSS_MDP3) += mdss-mdp3.o
