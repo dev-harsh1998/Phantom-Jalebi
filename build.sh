@@ -17,7 +17,7 @@ KERNEL="zImage"
 #export USE_CCACHE=1
 
 #Hyper Kernel Details
-export KBUILD_BUILD_USER="harsh1998"
+export KBUILD_BUILD_USER="harshit"
 export KBUILD_BUILD_HOST="PhAnToM™"
 BASE_VER="PhAnToM"
 VER="-r1-$(date +"%Y-%m-%d"-%H%M)-"
@@ -88,10 +88,10 @@ PHANT-NARO(HARD-FLOATED)-6.1---->(2)
 do
 case "$echoice" in
 	1 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-7.0/bin/arm-eabi-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/uber-6/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/saber-4.9/lib/
 		#STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-strip
-		TC="UBER7"
+		TC="UBER6"
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
 		rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
