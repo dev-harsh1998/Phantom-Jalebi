@@ -38,7 +38,6 @@
 #include <linux/slab.h>
 #include <linux/pid_namespace.h>
 #include <linux/security.h>
-#include <linux/ratelimit.h>
 
 #include "binder.h"
 #include "binder_trace.h"
@@ -106,8 +105,8 @@ enum {
 	BINDER_DEBUG_PRIORITY_CAP           = 1U << 14,
 	BINDER_DEBUG_BUFFER_ALLOC_ASYNC     = 1U << 15,
 };
-static uint32_t binder_debug_mask;
-
+static uint32_t binder_debug_mask = BINDER_DEBUG_USER_ERROR |
+	BINDER_DEBUG_FAILED_TRANSACTION | BINDER_DEBUG_DEAD_TRANSACTION;
 module_param_named(debug_mask, binder_debug_mask, uint, S_IWUSR | S_IRUGO);
 
 static bool binder_debug_no_lock;
@@ -131,7 +130,7 @@ module_param_call(stop_on_user_error, binder_set_stop_on_user_error,
 #define binder_debug(mask, x...) \
 	do { \
 		if (binder_debug_mask & mask) \
-			pr_info_ratelimited(x); \
+			pr_info(x); \
 	} while (0)
 
 #define binder_user_error(x...) \
@@ -453,8 +452,9 @@ static size_t binder_buffer_size(struct binder_proc *proc,
 {
 	if (list_is_last(&buffer->entry, &proc->buffers))
 		return proc->buffer + proc->buffer_size - (void *)buffer->data;
-	return (size_t)list_entry(buffer->entry.next,
-			  struct binder_buffer, entry) - (size_t)buffer->data;
+	else
+		return (size_t)list_entry(buffer->entry.next,
+			struct binder_buffer, entry) - (size_t)buffer->data;
 }
 
 static void binder_insert_free_buffer(struct binder_proc *proc,
@@ -1185,8 +1185,6 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 				     uint32_t error_code)
 {
 	struct binder_thread *target_thread;
-	struct binder_transaction *next;
-
 	BUG_ON(t->flags & TF_ONE_WAY);
 	while (1) {
 		target_thread = t->from;
@@ -1200,8 +1198,7 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 			if (target_thread->return_error == BR_OK) {
 				binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
 					     "send failed reply for transaction %d to %d:%d\n",
-					      t->debug_id,
-					      target_thread->proc->pid,
+					      t->debug_id, target_thread->proc->pid,
 					      target_thread->pid);
 
 				binder_pop_transaction(target_thread, t);
@@ -1214,23 +1211,24 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 					target_thread->return_error);
 			}
 			return;
-		}
-		next = t->from_parent;
+		} else {
+			struct binder_transaction *next = t->from_parent;
 
-		binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
-			     "send failed reply for transaction %d, target dead\n",
-			     t->debug_id);
+			binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
+				     "send failed reply for transaction %d, target dead\n",
+				     t->debug_id);
 
-		binder_pop_transaction(target_thread, t);
-		if (next == NULL) {
+			binder_pop_transaction(target_thread, t);
+			if (next == NULL) {
+				binder_debug(BINDER_DEBUG_DEAD_BINDER,
+					     "reply failed, no target thread at root\n");
+				return;
+			}
+			t = next;
 			binder_debug(BINDER_DEBUG_DEAD_BINDER,
-				     "reply failed, no target thread at root\n");
-			return;
+				     "reply failed, no target thread -- retry %d\n",
+				      t->debug_id);
 		}
-		t = next;
-		binder_debug(BINDER_DEBUG_DEAD_BINDER,
-			     "reply failed, no target thread -- retry %d\n",
-			      t->debug_id);
 	}
 }
 
@@ -1283,6 +1281,7 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
 		case BINDER_TYPE_WEAK_HANDLE: {
 			struct binder_ref *ref = binder_get_ref(proc, fp->handle,
 						fp->type == BINDER_TYPE_HANDLE);
+
 			if (ref == NULL) {
 				pr_err("transaction release %d bad handle %d\n",
 				 debug_id, fp->handle);
@@ -1375,6 +1374,7 @@ static void binder_transaction(struct binder_proc *proc,
 	} else {
 		if (tr->target.handle) {
 			struct binder_ref *ref;
+
 			ref = binder_get_ref(proc, tr->target.handle, true);
 			if (ref == NULL) {
 				binder_user_error("%d:%d got transaction to invalid handle\n",
@@ -1468,7 +1468,7 @@ static void binder_transaction(struct binder_proc *proc,
 		t->from = thread;
 	else
 		t->from = NULL;
-	t->sender_euid = task_euid(proc->tsk);
+	t->sender_euid = proc->tsk->cred->euid;
 	t->to_proc = target_proc;
 	t->to_thread = target_thread;
 	t->code = tr->code;
@@ -1551,7 +1551,6 @@ static void binder_transaction(struct binder_proc *proc,
 					proc->pid, thread->pid,
 					(u64)fp->binder, node->debug_id,
 					(u64)fp->cookie, (u64)node->cookie);
-				return_error = BR_FAILED_REPLY;
 				goto err_binder_get_ref_for_node_failed;
 			}
 			if (security_binder_transfer_binder(proc->tsk, target_proc->tsk)) {
@@ -1583,6 +1582,7 @@ static void binder_transaction(struct binder_proc *proc,
 		case BINDER_TYPE_WEAK_HANDLE: {
 			struct binder_ref *ref = binder_get_ref(proc, fp->handle,
 						fp->type == BINDER_TYPE_HANDLE);
+
 			if (ref == NULL) {
 				binder_user_error("%d:%d got transaction with invalid handle, %d\n",
 						proc->pid,
@@ -2226,16 +2226,12 @@ retry:
 		struct binder_work *w;
 		struct binder_transaction *t = NULL;
 
-		if (!list_empty(&thread->todo)) {
-			w = list_first_entry(&thread->todo, struct binder_work,
-					     entry);
-		} else if (!list_empty(&proc->todo) && wait_for_proc_work) {
-			w = list_first_entry(&proc->todo, struct binder_work,
-					     entry);
-		} else {
-			/* no data added */
-			if (ptr - buffer == 4 &&
-			    !(thread->looper & BINDER_LOOPER_STATE_NEED_RETURN))
+		if (!list_empty(&thread->todo))
+			w = list_first_entry(&thread->todo, struct binder_work, entry);
+		else if (!list_empty(&proc->todo) && wait_for_proc_work)
+			w = list_first_entry(&proc->todo, struct binder_work, entry);
+		else {
+			if (ptr - buffer == 4 && !(thread->looper & BINDER_LOOPER_STATE_NEED_RETURN)) /* no data added */
 				goto retry;
 			break;
 		}
@@ -2622,7 +2618,6 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	struct binder_thread *thread;
 	unsigned int size = _IOC_SIZE(cmd);
 	void __user *ubuf = (void __user *)arg;
-	kuid_t curr_euid = current_euid();
 
 	/*pr_info("binder_ioctl: %d:%d %x %lx\n", proc->pid, current->pid, cmd, arg);*/
 
@@ -2704,16 +2699,15 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		if (ret < 0)
 			goto err;
 		if (uid_valid(binder_context_mgr_uid)) {
-			if (!uid_eq(binder_context_mgr_uid, curr_euid)) {
+			if (!uid_eq(binder_context_mgr_uid, current->cred->euid)) {
 				pr_err("BINDER_SET_CONTEXT_MGR bad uid %d != %d\n",
-				       from_kuid(&init_user_ns, curr_euid),
+				       from_kuid(&init_user_ns, current->cred->euid),
 				       from_kuid(&init_user_ns, binder_context_mgr_uid));
 				ret = -EPERM;
 				goto err;
 			}
-		} else {
-			binder_context_mgr_uid = curr_euid;
-		}
+		} else
+			binder_context_mgr_uid = current->cred->euid;
 		binder_context_mgr_node = binder_new_node(proc, 0, 0);
 		if (binder_context_mgr_node == NULL) {
 			ret = -ENOMEM;
