@@ -29,7 +29,7 @@ export SUBARCH=arm
 
 # Paths
 KERNEL_DIR=`pwd`
-RESOURCE_DIR="/home/harshit/android/kernel/android_kernel_cyanogen_msm8916"
+RESOURCE_DIR="/home/harshit/android/kernel/Jalebi"
 ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2"
 TOOLCHAIN_DIR="/home/harshit/android/kernel/tc"
 REPACK_DIR="$ANYKERNEL_DIR"

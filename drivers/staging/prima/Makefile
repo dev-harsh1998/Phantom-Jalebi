@@ -1,17 +1,15 @@
-# These are provided in Android-based builds
-# Need to explicitly define for Kernel-based builds
 MODNAME := wlan
 WLAN_ROOT := drivers/staging/prima
+
+# Feature flags which are not (currently) configurable via Kconfig
 
 # To enable CONFIG_QCOM_ESE_UPLOAD, dependent config
 # CONFIG_QCOM_ESE must be enabled.
 CONFIG_QCOM_ESE := n
 CONFIG_QCOM_ESE_UPLOAD := n
 
-# Feature flags which are not (currently) configurable via Kconfig
-
 #Whether to build debug version
-BUILD_DEBUG_VERSION := 1
+BUILD_DEBUG_VERSION := 0
 
 #Enable this flag to build driver in diag version
 BUILD_DIAG_VERSION := 1
@@ -260,7 +258,6 @@ SME_P2P_OBJS = $(SME_SRC_DIR)/p2p/p2p_Api.o
 SME_RRM_OBJS := $(SME_SRC_DIR)/rrm/sme_rrm.o
 
 SME_NAN_OBJS = $(SME_SRC_DIR)/nan/nan_Api.o
-
 
 SME_OBJS :=	$(SME_BTC_OBJS) \
 		$(SME_CCM_OBJS) \
@@ -610,9 +607,6 @@ endif
 CDEFINES += -DFEATURE_WLAN_CH_AVOID
 CDEFINES += -DWLAN_FEATURE_AP_HT40_24G
 
-# Some kernel include files are being moved.  Check to see if
-# the old version of the files are present
-
 ifeq ($(EXISTS_MSM_SMD),1)
 CDEFINES += -DEXISTS_MSM_SMD
 endif
@@ -622,7 +616,7 @@ CDEFINES += -DEXISTS_MSM_SMSM
 endif
 
 # Fix build for GCC 4.7
-EXTRA_CFLAGS += -Wno-unused-function
+EXTRA_CFLAGS += -Wno-maybe-uninitialized -Wno-unused-function -Wno-unused-variable
 
 ifeq ($(CONFIG_WLAN_OFFLOAD_PACKETS),y)
 CDEFINES += -DWLAN_FEATURE_OFFLOAD_PACKETS
