@@ -11,6 +11,7 @@ restore='\033[0m'
 clear
 
 # Resources
+export KBUILD_BUILD_HOST="Death-Machine"
 THREAD="-j12"
 DEFCONFIG="cyanogenmod_jalebi_defconfig"
 KERNEL="zImage"
@@ -31,7 +32,7 @@ export SUBARCH=arm
 KERNEL_DIR=`pwd`
 RESOURCE_DIR="/home/harshit/android/kernel/Jalebi"
 ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2"
-TOOLCHAIN_DIR="/home/harshit/android/kernel/tc"
+TOOLCHAIN_DIR="/home/harshit/android/kernel/toolchain"
 REPACK_DIR="$ANYKERNEL_DIR"
 PATCH_DIR="$ANYKERNEL_DIR/patch"
 MODULES_DIR="$ANYKERNEL_DIR/modules"
@@ -79,16 +80,16 @@ echo -e "${restore}"
 echo -e "${cyan}"
 while read -p "Plese Select Desired Toolchain for compiling Kernel
 
-UBERTC-4.9---->(1)
+Linaro 6.2---->(1)
 
-PHANT-NARO(HARD-FLOATED)-6.1---->(2)
+Uber 6.2.1---->(2)
 
 
 " echoice
 do
 case "$echoice" in
 	1 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/uber-6/bin/arm-eabi-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/gcc-linaro-6.2.1-2016.11-x86_64_arm-eabi/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/saber-4.9/lib/
 		#STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-strip
 		TC="UBER6"
@@ -101,11 +102,11 @@ case "$echoice" in
                 cd $KERNEL_DIR
 		make clean && make mrproper
 		echo "cleaned directory"
-		echo "Compiling $KERNEL_VER with uber toolchain"
+		echo "Compiling $KERNEL_VER with Linaro toolchain"
 		break
 		;;
 	2 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-4.9/bin/arm-eabi-
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/arm-eabi-6.x/bin/arm-eabi-
 		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
 #		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
 #		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
@@ -119,7 +120,7 @@ case "$echoice" in
 		cd $KERNEL_DIR
 		make clean && make mrproper
 		echo "cleaned directory"
-		echo "Compiling $KERNEL_VER Using pHANTOM Toolchain"
+		echo "Compiling $KERNEL_VER Using Uber Toolchain"
 		break
 		;;
 
