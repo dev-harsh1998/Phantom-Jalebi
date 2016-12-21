@@ -1,10 +1,6 @@
 VERSION = 3
 PATCHLEVEL = 10
-<<<<<<< HEAD
-SUBLEVEL = 100
-=======
 SUBLEVEL = 104
->>>>>>> 87d6dde... Linux 3.10.104
 EXTRAVERSION =
 NAME = TOSSUG Baby Fish
 
@@ -245,26 +241,10 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-<<<<<<< HEAD
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
-<<<<<<< HEAD
-<<<<<<< HEAD
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-value
 HOSTCXXFLAGS = -O3 -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe
-=======
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-frame-pointer -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-value
-HOSTCXXFLAGS = -Ofast -fgcse-las -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -pipe
-=======
-HOSTCC       = gcc
-HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
-=======
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
->>>>>>> 87d6dde... Linux 3.10.104
-HOSTCXXFLAGS = -O2
->>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
->>>>>>> parent of a008537... Move d_u.d_child to d_child
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -347,11 +327,7 @@ include $(srctree)/scripts/Kbuild.include
 # Make variables (CC, etc...)
 
 AS		= $(CROSS_COMPILE)as
-<<<<<<< HEAD
 LD		= $(CCACHE) $(CROSS_COMPILE)ld
-=======
-LD		= $(CROSS_COMPILE)ld
->>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
 CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
@@ -372,7 +348,6 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-<<<<<<< HEAD
 
 #KERNEL_FLAGS	= -mtune=cortex-a53 \
 #		  -fgcse-after-reload -fgcse-sm \
@@ -380,8 +355,6 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 #		  -frename-registers -ftree-vectorize \
 #		  -fmodulo-sched -ffast-math -funsafe-math-optimizations
 
-=======
->>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
 LDFLAGS_MODULE  = --strip-debug
@@ -390,6 +363,7 @@ AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 ARM_ARCH_OPT := -mtune=cortex-a53
+
 GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a) \
  -g0 \
  -DNDEBUG \
@@ -419,7 +393,6 @@ LINUXINCLUDE    := \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-<<<<<<< HEAD
 					-fno-strict-aliasing -fno-common \
 					-Werror-implicit-function-declaration \
 					-Wno-format-security -Wno-logical-not-parentheses \
@@ -435,16 +408,6 @@ $(GEN_OPT_FLAGS)
 
 KBUILD_AFLAGS_KERNEL := $(GEN_OPT_FLAGS)
 KBUILD_CFLAGS_KERNEL := $(GEN_OPT_FLAGS)
-=======
-		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks \
-		   -std=gnu89
-
-KBUILD_AFLAGS_KERNEL :=
-KBUILD_CFLAGS_KERNEL :=
->>>>>>> 87d6dde... Linux 3.10.104
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_AFLAGS_MODULE  := -DMODULE
 KBUILD_CFLAGS_MODULE  := -DMODULE
