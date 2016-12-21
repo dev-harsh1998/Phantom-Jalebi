@@ -37,12 +37,12 @@ blink_red='\033[05;31m'
 nocol='\033[0m'
 TC="Linaro"
 # Modify the following variable if you want to build
-export CROSS_COMPILE="/home/dev-harsh1998/android/kernel/tc/arm-eabi-4.9/bin/arm-eabi-"
+export CROSS_COMPILE="/home/harshit/android/kernel/toolchain/gcc-linaro-6.2.1-2016.11-x86_64_arm-eabi/bin/arm-eabi-"
 export ARCH=arm
 #export SUBARCH=arm
 export KBUILD_BUILD_USER="dev_harsh1998"
-export KBUILD_BUILD_HOST="UNLEASHED-DeMon"
-STRIP="/home/dev-harsh1998/android/kernel/tc/arm-eabi-6.x-linaro/bin/arm-eabi-strip"
+export KBUILD_BUILD_HOST="Phantom"
+STRIP="/home/harshit/android/kernel/toolchain/gcc-linaro-6.2.1-2016.11-x86_64_arm-eabi/bin/arm-eabi-strip"
 MODULES_DIR=$KERNEL_DIR/arch/arm/boot/AnyKernel2/modules
 echo -e "$green***********************************************"
 echo "  Brace Yourselves You are building one of the best Msm8916 kernel ;)   "
@@ -80,29 +80,29 @@ echo "         Modules & Stuffs        "
 echo -e "***********************************************$nocol"
 #make modules -j12
 $DTBTOOL -2 -o $KERNEL_DIR/arch/arm/boot/AnyKernel2/dtb -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
-cp -vr $KERN_IMG $REPACK_DIR/zImage
+#cp -vr $KERN_IMG $REPACK_DIR/zImage
 #strip_modules
 }
 
 #strip_modules ()
-{
-echo "Copying modules"
-rm $MODULES_DIR/*
-find . -name '*.ko' -exec cp {} $MODULES_DIR/ \;
-cd $MODULES_DIR
-echo "Stripping modules for size"
-$STRIP --strip-unneeded *.ko
-cd $KERNEL_DIR
-make_zip
-}
+#{
+#echo "Copying modules"
+#rm $MODULES_DIR/*
+#find . -name '*.ko' -exec cp {} $MODULES_DIR/ \;
+#cd $MODULES_DIR
+#echo "Stripping modules for size"
+#$STRIP --strip-unneeded *.ko
+#cd $KERNEL_DIR
+#make_zip
+#}
 
-make_zip ()
-{
-		cd $REPACK_DIR
-                zip -r `echo $Phantom_VER$TC`.zip *
-		mv  `echo $Phantom_VER$TC`.zip $ZIP_MOVE
-cd $KERNEL_DIR
-}
+#make_zip ()
+#{
+#		cd $REPACK_DIR
+#                zip -r `echo $Phantom_VER$TC`.zip *
+#		mv  `echo $Phantom_VER$TC`.zip $ZIP_MOVE
+#cd $KERNEL_DIR
+#}
 case $1 in
 clean)
 make ARCH=arm -j8 clean mrproper
