@@ -102,10 +102,21 @@ case "$echoice" in
 		break
 		;;
 	2 )
+<<<<<<< HEAD
 		export CROSS_COMPILE=$TOOLCHAIN_DIR/uber-4.9/bin/aarch64-linux-android-
 		export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
 		STRIP=$TOOLCHAIN_DIR/uber-4.9/bin/aarch64-linux-android-strip
 		TC="UB"
+=======
+		export CROSS_COMPILE=$TOOLCHAIN_DIR/PHANTOM-NARO/bin/arm-linux-gnueabihf-
+		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
+<<<<<<< HEAD
+#		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
+=======
+		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
+>>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
+		TC="PHANT-NARO"
+>>>>>>> parent of a008537... Move d_u.d_child to d_child
 		rm -rf $MODULES_DIR/*
 		rm -rf $ZIP_MOVE/*
 		rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
@@ -128,7 +139,11 @@ done
 echo -e "${restore}"
 
 echo
+<<<<<<< HEAD
 while read -p "Do you want to start Building Hyper Kernel ?
+=======
+while read -p "Do you want to start Building Phantom Kernel ?
+>>>>>>> parent of a008537... Move d_u.d_child to d_child
 
 Yes Or No ? 
 
