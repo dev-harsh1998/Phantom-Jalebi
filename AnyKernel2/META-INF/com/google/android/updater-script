@@ -1,0 +1,23 @@
+ui_print("PhAnToM Kernel For Yu YUNIQUE MSM8916 Devices");
+
+ui_print("Extracting flashing tools thanks to Osmosis for his boot.img tools");
+package_extract_dir("tools", "/tmp");
+set_perm(0, 0, 0777, "/tmp/mkbootimg");
+set_perm(0, 0, 0777, "/tmp/unpackbootimg");
+set_perm(0, 0, 0777, "/tmp/flash_kernel.sh");
+set_progress(0.2);
+
+ui_print("Time to start Flashing PhAnToM™ Kernel");
+run_program("/tmp/flash_kernel.sh");
+set_progress(0.6);
+
+ui_print("Kernel Flashed Successfully Cleaning up the Used Tools");
+delete("/tmp/boot.img");
+delete("/tmp/mkbootimg");
+delete("/tmp/unpackbootimg");
+delete("/tmp/flash_kernel.sh");
+set_progress(0.7);
+
+
+ui_print("Kernel installation completed!");
+set_progress(1.0);

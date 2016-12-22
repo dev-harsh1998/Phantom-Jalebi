@@ -19,7 +19,7 @@
 restore='\033[0m'
 KERNEL_DIR=$PWD
 KERNEL="zImage"
-ANYKERNEL_DIR="$KERNEL_DIR/Kernel-Ready"
+ANYKERNEL_DIR="$KERNEL_DIR/AnyKernel2"
 REPACK_DIR="$ANYKERNEL_DIR"
 ZIP_MOVE="$KERNEL_DIR"
 KERN_IMG=$KERNEL_DIR/arch/arm/boot/zImage
@@ -43,7 +43,7 @@ export ARCH=arm
 export KBUILD_BUILD_USER="dev_harsh1998"
 export KBUILD_BUILD_HOST="Phantom"
 STRIP="/home/harshit/android/kernel/toolchain/gcc-linaro-6.2.1-2016.11-x86_64_arm-eabi/bin/arm-eabi-strip"
-MODULES_DIR=$KERNEL_DIR/arch/arm/boot/AnyKernel2/modules
+#MODULES_DIR=$KERNEL_DIR/arch/arm/boot/AnyKernel2/modules
 echo -e "$green***********************************************"
 echo "  Brace Yourselves You are building one of the best Msm8916 kernel ;)   "
 echo -e "***********************************************$nocol"
@@ -79,9 +79,9 @@ echo -e "$yellow***********************************************"
 echo "         Modules & Stuffs        "
 echo -e "***********************************************$nocol"
 #make modules -j12
-$DTBTOOL -2 -o $KERNEL_DIR/arch/arm/boot/AnyKernel2/dtb -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
-#cp -vr $KERN_IMG $REPACK_DIR/zImage
-#strip_modules
+$DTBTOOL -2 -o $KERNEL_DIR/AnyKernel2/tools/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
+cp -vr $KERN_IMG $REPACK_DIR/tools/zImage
+make_zip
 }
 
 #strip_modules ()
@@ -96,13 +96,13 @@ $DTBTOOL -2 -o $KERNEL_DIR/arch/arm/boot/AnyKernel2/dtb -s 2048 -p $KERNEL_DIR/s
 #make_zip
 #}
 
-#make_zip ()
-#{
-#		cd $REPACK_DIR
-#                zip -r `echo $Phantom_VER$TC`.zip *
-#		mv  `echo $Phantom_VER$TC`.zip $ZIP_MOVE
-#cd $KERNEL_DIR
-#}
+make_zip ()
+{
+		cd $REPACK_DIR
+                zip -r `echo $Phantom_VER$TC`.zip *
+		mv  `echo $Phantom_VER$TC`.zip $ZIP_MOVE
+cd $KERNEL_DIR
+}
 case $1 in
 clean)
 make ARCH=arm -j8 clean mrproper
