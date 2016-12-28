@@ -1,5 +1,15 @@
-ui_print("PhAnToM Kernel For Yu YUNIQUE MSM8916 Devices");
-
+ui_print("Yu YUNIQUE MSM8916 Devices");
+ui_print " ";
+ui_print " ";
+ui_print "| . \||_|\|  \ | \|\|_ _\|   ||\/\ ";  
+ui_print "| __/| _ || . \|  \|  || | . ||   \  ";
+ui_print "|/   |/ |/|/\_/|/\_/  |/ |___/|/v\/  ";
+ui_print "__ _ ____ ____ __   ____ __          ";
+ui_print "| V \| __\| . \| \|\| __\| |         ";
+ui_print "|  <_|  ]_|  <_|  \||  ]_| |__       ";
+ui_print "|/\_/|___/|/\_/|/\_/|___/|___/       ";
+ui_print "";
+ui_print "";
 ui_print("Extracting flashing tools thanks to Osmosis for his boot.img tools");
 package_extract_dir("tools", "/tmp");
 set_perm(0, 0, 0777, "/tmp/mkbootimg");
