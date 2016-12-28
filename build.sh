@@ -23,14 +23,16 @@ Hyper_VER="$BASE_VER$VER$TC"
 # Vars
 export ARCH=arm
 export SUBARCH=arm
+export KBUILD_BUILD_USER=dev-harsh1998
+export KBUILD_BUILD_HOST=PhAnToM-Server1
 
 # Paths
 KERNEL_DIR=`pwd`
 RESOURCE_DIR="/home/android/kernel/Phantom-Jalebi"
-ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2/tools"
+ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2"
 TOOLCHAIN_DIR="/home/android/kernel/tc"
-REPACK_DIR="$RESOURCE_DIR/AnyKernel2"
-PATCH_DIR="$ANYKERNEL_DIR/patch"
+REPACK_DIR="$ANYKERNEL_DIR"
+#PATCH_DIR="$ANYKERNEL_DIR/patch"
 #MODULES_DIR="$ANYKERNEL_DIR/modules"
 ZIP_MOVE="$RESOURCE_DIR/kernel_out"
 ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
@@ -66,108 +68,25 @@ function make_zip {
 
 DATE_START=$(date +"%s")
 
+# TC tasks
+export CROSS_COMPILE=$TOOLCHAIN_DIR/hj123/bin/arm-eabi-
+export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/hj123/lib/
+#STRIP=$TOOLCHAIN_DIR/uber-4.9/bin/aarch64-linux-android-strip
+TC="UB"
+#rm -rf $MODULES_DIR/*
+rm -rf $ZIP_MOVE/*
+rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
+cd $ANYKERNEL_DIR/tools
+rm -rf zImage
+rm -rf dt.img
+cd $KERNEL_DIR
 
-echo -e "${green}"
-echo "--------------------------------------------------------"
-echo "Wellcome !!!   Initiatig To Compile $Hyper_VER    "
-echo "--------------------------------------------------------"
-echo -e "${restore}"
+# Make
+make_kernel
+make_dtb
+#make_modules
+make_zip
 
-echo -e "${cyan}"
-while read -p "Plese Select Desired Toolchain for compiling Hyper Kernel
-
-SABERMOD-4.9---->(1)
-
-UBERTC-4.9---->(2)
-
-
-" echoice
-do
-case "$echoice" in
-	1 )
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/hj123/bin/arm-eabi-
-		export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/hj123/lib/
-		#STRIP=$TOOLCHAIN_DIR/saber-4.9/bin/aarch64-strip
-		TC="Linaro"
-#		rm -rf $MODULES_DIR/*
-		rm -rf $ZIP_MOVE/*
-		rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
-		cd $ANYKERNEL_DIR
-		rm -rf zImage
-		rm -rf dtb
-                cd $KERNEL_DIR
-		make clean && make mrproper
-		echo "cleaned directory"
-		echo "Compiling Hyper Kernel Using SABERMOD-4.9 Toolchain"
-		break
-		;;
-	2 )
-<<<<<<< HEAD
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/uber-4.9/bin/aarch64-linux-android-
-		export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
-		STRIP=$TOOLCHAIN_DIR/uber-4.9/bin/aarch64-linux-android-strip
-		TC="UB"
-=======
-		export CROSS_COMPILE=$TOOLCHAIN_DIR/PHANTOM-NARO/bin/arm-linux-gnueabihf-
-		#export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/uber-4.9/lib/
-<<<<<<< HEAD
-#		STRIP=$TOOLCHAIN_DIR/arm-eabi-4.9-master/bin/arm-eabi-
-=======
-		STRIP=$TOOLCHAIN_DIR/PHANTOM-NARO/arm-linux-gnueabihf-strip
->>>>>>> parent of 54df342... Clean up and Add Phantom Flags ;)
-		TC="PHANT-NARO"
->>>>>>> parent of a008537... Move d_u.d_child to d_child
-		rm -rf $MODULES_DIR/*
-		rm -rf $ZIP_MOVE/*
-		rm -rf $KERNEL_DIR/arch/arm/boot/dt.img
-		cd $ANYKERNEL_DIR
-		rm -rf zImage
-		rm -rf dtb
-		cd $KERNEL_DIR
-		echo "cleaned directory"
-		echo "Compiling Hyper Kernel Using UBERTC-4.9 Toolchain"
-		break
-		;;
-
-	* )
-		echo
-		echo "Invalid Selection try again !!"
-		echo
-		;;
-esac
-done
-echo -e "${restore}"
-
-echo
-<<<<<<< HEAD
-while read -p "Do you want to start Building Hyper Kernel ?
-=======
-while read -p "Do you want to start Building Phantom Kernel ?
->>>>>>> parent of a008537... Move d_u.d_child to d_child
-
-Yes Or No ? 
-
-Enter Y for Yes Or N for No
-" dchoice
-do
-case "$dchoice" in
-	y|Y )
-		make_kernel
-		make_dtb
-	#	make_modules
-		make_zip
-		break
-		;;
-	n|N )
-		break
-		;;
-	* )
-		echo
-		echo "Invalid Selection try again !!"
-		echo
-		;;
-esac
-done
 echo -e "${green}"
 echo $Hyper_VER$TC.zip
 echo "------------------------------------------"
@@ -179,4 +98,3 @@ echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo " "
 cd $ZIP_MOVE
 ls
-ftp uploads.androidfilehost.com
