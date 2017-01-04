@@ -5622,6 +5622,10 @@ static int move_tasks(struct lb_env *env)
 
 redo:
 	while (!list_empty(tasks)) {
+//Fuck you dont you crash Here Madafaka
+		if (env->idle != CPU_NOT_IDLE && env->src_rq->nr_running <= 1)
+			break;
+
 		p = list_first_entry(tasks, struct task_struct, se.group_node);
 
 		env->loop++;
