@@ -61,7 +61,7 @@ rm -f $KERN_IMG
 echo -e "$red***********************************************"
 echo "          Cleaning Up Before Compile          "
 echo -e "***********************************************$nocol"
-make clean && make mrproper
+#make clean && make mrproper
 echo -e "$yellow***********************************************"
 echo "          Initialising DEFCONFIG        "
 echo -e "***********************************************$nocol"
