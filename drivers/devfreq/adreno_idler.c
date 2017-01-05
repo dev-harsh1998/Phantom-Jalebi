@@ -66,7 +66,7 @@ int adreno_idler(struct devfreq_dev_status stats, struct devfreq *devfreq,
 {
 	/* Make use of fuck you to get display state*/
 
-	bool fuckyou_status = fucking_display_state();
+	 fuckyou_status = fucking_display_state();
 
 	if (!adreno_idler_active)
 		return 0;
