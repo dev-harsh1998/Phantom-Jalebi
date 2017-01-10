@@ -61,7 +61,7 @@ rm -f $KERN_IMG
 echo -e "$red***********************************************"
 echo "          Cleaning Up Before Compile          "
 echo -e "***********************************************$nocol"
-#make clean && make mrproper
+make clean && make mrproper
 echo -e "$yellow***********************************************"
 echo "          Initialising DEFCONFIG        "
 echo -e "***********************************************$nocol"
@@ -69,6 +69,7 @@ make cyanogenmod_jalebi_defconfig -j12
 echo -e "$yellow***********************************************"
 echo "          Cooking PhAnToM Kernel         "
 echo -e "***********************************************$nocol"
+gedit .config
 make zImage -j12
 echo -e "$yellow***********************************************"
 echo "          GENERATING DEVICE TREE BLOBS          "
