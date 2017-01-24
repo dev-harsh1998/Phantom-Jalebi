@@ -37,11 +37,11 @@ blink_red='\033[05;31m'
 nocol='\033[0m'
 TC="Linaro"
 # Modify the following variable if you want to build
-export CROSS_COMPILE="/home/harsh1998/android/kernel/tc/arm-eabi-6.x/bin/arm-eabi-"
+export CROSS_COMPILE="/home/harsh1998/android/kernel/tc/arm-eabi-6.2.1/bin/arm-eabi-"
 export ARCH=arm
 #export SUBARCH=arm
 export KBUILD_BUILD_USER="dev_harsh1998"
-STRIP="/home/harshit/android/kernel/tc/arm-eabi-6.x/bin/arm-eabi-strip"
+STRIP="/home/harshit/android/kernel/tc/arm-eabi-6.2.1/bin/arm-eabi-strip"
 #MODULES_DIR=$KERNEL_DIR/arch/arm/boot/AnyKernel2/modules
 echo -e "$green***********************************************"
 echo "  Brace Yourselves You are building one of the best Msm8916 kernel ;)   "
